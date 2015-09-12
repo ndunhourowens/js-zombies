@@ -264,12 +264,19 @@ Player.prototype.equip = function(itemToEquip) {
  * @param {Food} itemToEat  The food item to eat.
  */
 Player.prototype.eat = function(itemToEat) {
+  var maxHealth = this.getMaxHealth();
+
   if (!(itemToEat instanceof Food)) {
     return false;
   }else if (this.getPack().indexOf(itemToEat) === -1) {
     return false;
   }else {
     this.discardItem(itemToEat);
+    if (this.health + itemToEat.energy >= maxHealth) {
+      this.health = maxHealth;
+    }else {
+      this.health += itemToEat.energy;
+    }
   }
 };
 
@@ -285,7 +292,16 @@ Player.prototype.eat = function(itemToEat) {
  * @name useItem
  * @param {Item/Weapon/Food} item   The item to use.
  */
+Player.prototype.useItem = function(item){
+  // call function to equip item IF weapon
+  if (item instanceof Weapon){
+    this.equip(item);
+  // call function to eat IF food;
+  }else if (item instanceof Food) {
+    this.eat(item);
+  }
 
+};
 
 /**
  * Player Class Method => equippedWith()

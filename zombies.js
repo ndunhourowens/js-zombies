@@ -98,10 +98,9 @@ function Player(name, health, strength, speed) {
   this.health = health;
   this.strength = strength;
   this.speed  = speed;
-  this.names = name;
   this._pack = [];
   this._maxHealth = health;
-
+  Item.call(this, name);
 
   this.strength = strength;
   this.isAlive = true;
@@ -129,11 +128,11 @@ Player.prototype.getMaxHealth = function() {
  */
 
 Player.prototype.checkPack = function() {
-  for(var i = 0; i < this._pack.length; i++) {
 
-  //console.log('you have these items in your bag ', this.getPack()[i].name);
 
-  }
+  console.log('you have these items in your bag ', this._pack);
+
+
 };
 /**
  * Player Class Method => takeItem(item)
@@ -152,12 +151,12 @@ Player.prototype.checkPack = function() {
  * @param {Item/Weapon/Food} item   The item to take.
  * @return {boolean} true/false     Whether player was able to store item in pack.
  */
-Player.prototype.takeItem = function(item) {
+Player.prototype.takeItem = function(item) { //put something in the bag
   var itemsInPack = this.getPack();
 
   if (itemsInPack.length < 3) {
     itemsInPack.push(item);
-    //console.log(this.name, ' you have ', itemsInPack, ' in your bag');
+    console.log(this.name, ' you have ', itemsInPack, ' in your bag');
     return true;
 
   } else{
@@ -192,7 +191,7 @@ Player.prototype.takeItem = function(item) {
  * @param {Item/Weapon/Food} item   The item to discard.
  * @return {boolean} true/false     Whether player was able to remove item from pack.
  */
-Player.prototype.discardItem = function(item) {
+Player.prototype.discardItem = function(item) { //take item out of the bag
     if (this.getPack().indexOf(item) === -1) { // there's nothing in the bag
       console.log('You dont have anything in your bag');
       return false;
@@ -223,8 +222,27 @@ Player.prototype.discardItem = function(item) {
  * @name equip
  * @param {Weapon} itemToEquip  The weapon item to equip.
  */
-Player.prototyep.equip = function(itemToEquip) {
+Player.prototype.equip = function(itemToEquip) {
+  // check if itemToEquip is NOT a weapon
+  if (!(itemToEquip instanceof Weapon )){  // if true then equip player
+    return false;
+  }else if (this.getPack().indexOf(itemToEquip) === -1) {
+    // true
+    return false;
+  }else {
+    // if player doesn't have a weapon in hand
+    if (this.discardItem(itemToEquip)) {
+      if(this.equipped === false ) {
+        // put weapon in hand
+        this.equipped = itemToEquip;
 
+        // if player has weapon
+      }else {
+        this.takeItem(this.equipped);
+        this.equipped = itemToEquip;
+      }
+    }
+  }
 };
 
 /**
@@ -245,7 +263,15 @@ Player.prototyep.equip = function(itemToEquip) {
  * @name eat
  * @param {Food} itemToEat  The food item to eat.
  */
-
+Player.prototype.eat = function(itemToEat) {
+  if (!(itemToEat instanceof Food)) {
+    return false;
+  }else if (this.getPack().indexOf(itemToEat) === -1) {
+    return false;
+  }else {
+    this.discardItem(itemToEat);
+  }
+};
 
 /**
  * Player Class Method => useItem(item)

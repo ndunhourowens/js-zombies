@@ -316,7 +316,15 @@ Player.prototype.useItem = function(item){
  * @name equippedWith
  * @return {string/boolean}   Weapon name or false if nothing is equipped.
  */
-
+Player.prototype.equippedWith = function() {
+  if (this.equipped === false) {
+    console.log('you dont have anything to fight with');
+    return false;
+  }else {
+    console.log('you have a ', this.equipped.name, ' to fight with');
+    return this.equipped.name;
+  }
+};
 
 /**
  * Class => Zombie(health, strength, speed)

@@ -131,7 +131,7 @@ Player.prototype.getMaxHealth = function() {
 Player.prototype.checkPack = function() {
   for(var i = 0; i < this._pack.length; i++) {
 
-  console.log('you have these items in your bag ', this.getPack()[i].name);
+  //console.log('you have these items in your bag ', this.getPack()[i].name);
 
   }
 };
@@ -193,15 +193,15 @@ Player.prototype.takeItem = function(item) {
  * @return {boolean} true/false     Whether player was able to remove item from pack.
  */
 Player.prototype.discardItem = function(item) {
-  // for (var i = 0; i < this._pack[i]; i++) {
-    console.log(this._pack);
-  //   if (item === this._pack.item.indexOf(itemsInPack().item, 0) {
-  //     console.log('true');
-  //   }else {
-  //     console.log('false');
-  //   }
+    if (this.getPack().indexOf(item) === -1) { // there's nothing in the bag
+      console.log('You dont have anything in your bag');
+      return false;
+    }else{
+      this.getPack().splice((this.getPack().indexOf(item)), 1);
+      console.log('You removed ', item, ' from your bag');
+      return true;
+    }
 
-  // }
 };
 
 /**
@@ -223,7 +223,9 @@ Player.prototype.discardItem = function(item) {
  * @name equip
  * @param {Weapon} itemToEquip  The weapon item to equip.
  */
+Player.prototyep.equip = function(itemToEquip) {
 
+};
 
 /**
  * Player Class Method => eat(itemToEat)
